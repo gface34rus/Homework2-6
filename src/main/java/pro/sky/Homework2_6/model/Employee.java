@@ -1,4 +1,4 @@
-package pro.sky.Homework2_6;
+package pro.sky.Homework2_6.model;
 
 import java.util.Objects;
 

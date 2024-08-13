@@ -1,9 +1,11 @@
-package pro.sky.Homework2_6;
+package pro.sky.Homework2_6.service;
 
 import org.springframework.stereotype.Service;
 import pro.sky.Homework2_6.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.Homework2_6.exceptions.EmployeeNotFoundException;
 import pro.sky.Homework2_6.exceptions.EmployeeStorageIsFullException;
+import pro.sky.Homework2_6.model.Employee;
+import pro.sky.Homework2_6.service.EmployeeService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,25 +18,25 @@ public class EmployeeServiceImpl implements EmployeeService {
             new Employee("Кирилл", "Донцов"), new Employee("Николай", "Нелюбов")));
 
     @Override
-    public void addEmployee(String firstName, String lastName) {
+    public Employee addEmployee(String firstName, String lastName) {
         if (employees.size() >= MAX_EMPLOYEES) {
             throw new EmployeeStorageIsFullException("Хранилище заполнено! Невозможно добавить работника.");
         }
-
         Employee newEmployee = new Employee(firstName, lastName);
-
         if (employees.contains(newEmployee)) {
             throw new EmployeeAlreadyAddedException("Такой работник уже добавлен в список");
         }
         employees.add(newEmployee);
+        return newEmployee;
     }
 
     @Override
-    public void removeEmployee(String firstName, String lastName) {
+    public Employee removeEmployee(String firstName, String lastName) {
         Employee employeeToRemove = new Employee(firstName, lastName);
         if (!employees.remove(employeeToRemove)) {
             throw new EmployeeNotFoundException("Работник с таким именем - не найден!");
-        }
+        }employees.remove(employeeToRemove);
+        return employeeToRemove;
     }
 
     @Override
