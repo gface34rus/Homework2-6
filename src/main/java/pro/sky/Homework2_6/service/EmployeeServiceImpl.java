@@ -1,5 +1,6 @@
 package pro.sky.Homework2_6.service;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import pro.sky.Homework2_6.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.Homework2_6.exceptions.EmployeeNotFoundException;
@@ -18,7 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     Map<String, Employee> employees = new HashMap<>();
     private final EmployeeServiceImpl employeeServiceImpl;
 
-    public EmployeeServiceImpl(EmployeeServiceImpl employeeServiceImpl) {
+    public EmployeeServiceImpl(@Lazy EmployeeServiceImpl employeeServiceImpl) {
         this.employeeServiceImpl = employeeServiceImpl;
     }
 
@@ -63,32 +64,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Collections.unmodifiableCollection(employees.values());
     }
 
-    @Override
-    public Employee findEmployeeWithMaxSalaryInDepartment(int department) {
-        return employeeServiceImpl.findAll().stream()
-                .filter(e -> e.getDepartment() == department)
-                .max(comparing(Employee::getSalary))
-                .orElseThrow();
-    }
-@Override
-    public Employee findEmployeeWithMinSalaryInDepartment(int department) {
-        return employeeServiceImpl.findAll().stream()
-                .filter(e -> e.getDepartment() == department)
-                .min(comparing(Employee::getSalary))
-                .orElseThrow();
-    }
-
-    @Override
-    public Collection<Employee> employeesDepartment(int department) {
-        return employeeServiceImpl.findAll().stream()
-                .filter(e -> e.getDepartment() == department)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Map<Integer, List<Employee>> allEmployeesDepartments() {
-        return employeeServiceImpl.findAll().stream()
-                .collect(groupingBy(Employee::getDepartment));
-    }
 }
 

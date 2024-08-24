@@ -16,12 +16,4 @@ public interface EmployeeService {
     Map<String, Employee> getAllEmployees();
 
     Collection<Employee> findAll();
-
-    Employee findEmployeeWithMaxSalaryInDepartment(int department);
-
-    Employee findEmployeeWithMinSalaryInDepartment(int department);
-
-    Collection<Employee> employeesDepartment(int department);
-
-    Map<Integer, List<Employee>> allEmployeesDepartments();
 }

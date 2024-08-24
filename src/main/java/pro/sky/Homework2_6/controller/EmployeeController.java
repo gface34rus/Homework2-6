@@ -1,5 +1,6 @@
 package pro.sky.Homework2_6.controller;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class EmployeeController {
     private final EmployeeServiceImpl employeeService;
 
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController( EmployeeService employeeService) {
         this.employeeService = (EmployeeServiceImpl) employeeService;
     }
 
