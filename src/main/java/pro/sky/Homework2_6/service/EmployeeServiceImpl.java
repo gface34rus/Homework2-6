@@ -7,11 +7,20 @@ import pro.sky.Homework2_6.exceptions.EmployeeStorageIsFullException;
 import pro.sky.Homework2_6.model.Employee;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private static final int MAX_EMPLOYEES = 5;
     Map<String, Employee> employees = new HashMap<>();
+    private final EmployeeServiceImpl employeeServiceImpl;
+
+    public EmployeeServiceImpl(EmployeeServiceImpl employeeServiceImpl) {
+        this.employeeServiceImpl = employeeServiceImpl;
+    }
 
     @Override
     public Employee addEmployee(String firstName, String lastName) {
@@ -48,4 +57,38 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Map<String, Employee> getAllEmployees() {
         return new HashMap<>(employees);
     }
+
+    @Override
+    public Collection<Employee> findAll() {
+        return Collections.unmodifiableCollection(employees.values());
+    }
+
+    @Override
+    public Employee findEmployeeWithMaxSalaryInDepartment(int department) {
+        return employeeServiceImpl.findAll().stream()
+                .filter(e -> e.getDepartment() == department)
+                .max(comparing(Employee::getSalary))
+                .orElseThrow();
+    }
+@Override
+    public Employee findEmployeeWithMinSalaryInDepartment(int department) {
+        return employeeServiceImpl.findAll().stream()
+                .filter(e -> e.getDepartment() == department)
+                .min(comparing(Employee::getSalary))
+                .orElseThrow();
+    }
+
+    @Override
+    public Collection<Employee> employeesDepartment(int department) {
+        return employeeServiceImpl.findAll().stream()
+                .filter(e -> e.getDepartment() == department)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<Integer, List<Employee>> allEmployeesDepartments() {
+        return employeeServiceImpl.findAll().stream()
+                .collect(groupingBy(Employee::getDepartment));
+    }
 }
+
