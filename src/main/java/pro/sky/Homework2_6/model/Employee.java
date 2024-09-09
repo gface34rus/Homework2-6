@@ -1,5 +1,8 @@
 package pro.sky.Homework2_6.model;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Employee {
@@ -31,7 +34,9 @@ public class Employee {
     }
 
     public Employee(String firstName, String lastName, int department, double salary) {
+        checkStringParam(firstName);
         this.firstName = firstName;
+        checkStringParam(lastName);
         this.lastName = lastName;
         this.salary = salary;
         this.department = department;
@@ -55,6 +60,14 @@ public class Employee {
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
         return Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName);
+    }
+
+    private String checkStringParam(String... strings) {
+        for (String string : strings)
+            if (!StringUtils.isAlpha(string)) {
+                throw new RuntimeException("Не корректный символ!!");
+            }
+        return StringUtils.capitalize(Arrays.toString(strings));
     }
 
     @Override
